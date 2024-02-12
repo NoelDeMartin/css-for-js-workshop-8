@@ -35,14 +35,10 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <ImageAnimationWrapper>
-            <Image alt="" src={imageSrc} />
-          </ImageAnimationWrapper>
-          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && (
-            <NewFlag>Just released!</NewFlag>
-          )}
+          <Image alt="" src={imageSrc} />
         </ImageWrapper>
+        {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
+        {variant === 'new-release' && (<NewFlag>Just released!</NewFlag>)}
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
@@ -70,25 +66,35 @@ const ShoeCard = ({
   );
 };
 
+const Wrapper = styled.article`
+  position: relative;
+`;
+
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
 `;
 
 const ImageWrapper = styled.div`
-  position: relative;
-`;
-
-const ImageAnimationWrapper = styled.div`
   overflow: hidden;
   border-radius: 16px 16px 4px 4px;
 `;
 
 const Image = styled.img`
   width: 100%;
-  will-change: transform;
-  transition: transform ease-out 400ms;
-  transform-origin: 50% 80%;
+  display: block;
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    will-change: transform;
+    transition: transform ease-out 400ms;
+    transform-origin: 50% 80%;
+
+    ${Link}:hover &,
+    ${Link}:focus & {
+      transform: scale(1.1);
+      transition: transform ease-in 200ms;
+    }
+  }
 `;
 
 const Row = styled.div`
@@ -128,8 +134,17 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
-  will-change: transform;
-  transition: transform 400ms;
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    will-change: transform;
+    transition: transform 400ms;
+
+    ${Link}:hover &,
+    ${Link}:focus & {
+        transform: rotate(20deg);
+        transition: transform 200ms;
+    }
+  }
 `;
 
 const SaleFlag = styled(Flag)`
@@ -138,22 +153,5 @@ const SaleFlag = styled(Flag)`
 const NewFlag = styled(Flag)`
   background-color: var(--color-secondary);
 `;
-
-const Wrapper = styled.article`
-  @media (prefers-reduced-motion: no-preference) {
-    &:hover {
-      ${Image} {
-        transform: scale(1.1);
-        transition: transform ease-in 200ms;
-      }
-
-      ${Flag} {
-        transform: rotate(20deg);
-        transition: transform 200ms;
-      }
-    }
-  }
-`;
-
 
 export default ShoeCard;
