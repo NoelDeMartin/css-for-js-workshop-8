@@ -1,4 +1,6 @@
+import React from 'react';
 import styled from 'styled-components/macro';
+
 import { WEIGHTS } from '../../constants';
 
 const HeaderNavLink = ({ children, ...delegated }) => {
@@ -24,31 +26,31 @@ const Wrapper = styled.a`
   }
 `;
 
-const InactiveText = styled.span`
+const Text = styled.span`
   @media (prefers-reduced-motion: no-preference) {
     display: block;
     transition: transform 200ms;
+    transform: translateY(var(--translate-from));
 
     ${Wrapper}:hover & {
-      transform: translateY(-100%);
+      transform: translateY(var(--translate-to));
     }
   }
 `;
 
-const ActiveText = styled.span`
+const InactiveText = styled(Text)`
+  --translate-from: 0%;
+  --translate-to: -100%;
+`;
+
+const ActiveText = styled(Text)`
+  --translate-from: 100%;
+  --translate-to: 0%;
+
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateY(100%);
   font-weight: ${WEIGHTS.bold};
-
-  @media (prefers-reduced-motion: no-preference) {
-    transition: transform 200ms;
-
-    ${Wrapper}:hover & {
-      transform: translateY(0%);
-    }
-  }
 `;
 
 export default HeaderNavLink;
